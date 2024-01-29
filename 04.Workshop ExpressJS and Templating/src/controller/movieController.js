@@ -10,7 +10,7 @@ router.post('/create', (req, res) => {
     const newMovie = req.body
     movieService.create(newMovie)
     console.log(newMovie);
-    res.send('A movie shoud be created')
+    res.redirect('/')
 })
 
 module.exports = router
