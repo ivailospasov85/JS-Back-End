@@ -18,9 +18,9 @@ router.get('/movies/:movieId', (req, res) => {
 
     const movie = movieService.getOne(movieId)
     // const stars = movie.rating
-    movie.rating = new Array(Number(movie.rating)).fill(true)
-    console.log(movie);
-res.render('details', { movie })
+    movieRating = new Array(Number(movie.rating)).fill(true)
+  
+res.render('details', { movie, movieRating})
 })
 
 module.exports = router
