@@ -17,10 +17,10 @@ router.get('/movies/:movieId', (req, res) => {
     movieId = req.params.movieId
 
     const movie = movieService.getOne(movieId)
-
-    movie.rating=new Array(Number(movie.rating)).fill(true)
-
-    res.render('details', { movie })
+    // const stars = movie.rating
+    movie.rating = new Array(Number(movie.rating)).fill(true)
+    console.log(movie);
+res.render('details', { movie })
 })
 
 module.exports = router
