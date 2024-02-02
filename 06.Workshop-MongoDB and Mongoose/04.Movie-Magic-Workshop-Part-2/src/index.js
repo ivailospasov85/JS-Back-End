@@ -15,9 +15,9 @@ configExpress(app);
 app.use(routes);
 
 
-mongoose.connect(`mongodb://127.0.0.1:27017/movies`)
+mongoose.connect(`mongodb://127.0.0.1:27017/magic-movies`)
     .then(() => {
-        console.log('Db connected');
+        console.log('MongoDB connected');
     })
     .catch(err => console.error('Connection error:', err));
 
