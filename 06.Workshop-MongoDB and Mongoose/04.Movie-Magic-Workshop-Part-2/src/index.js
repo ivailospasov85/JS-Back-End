@@ -1,4 +1,5 @@
 const express = require('express')
+const mongoose = require('mongoose')
 
 const app = express()
 const port = 5000
@@ -12,5 +13,13 @@ configHandlebars(app);
 configExpress(app);
 
 app.use(routes);
+
+
+mongoose.connect(`mongodb://127.0.0.1:27017/movies`)
+    .then(() => {
+        console.log('Db connected');
+    })
+    .catch(err => console.error('Connection error:', err));
+
 
 app.listen(port, () => console.log(`Server is listening ot port ${port}`))
