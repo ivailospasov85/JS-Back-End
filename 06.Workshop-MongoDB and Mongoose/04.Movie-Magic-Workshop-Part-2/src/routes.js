@@ -9,7 +9,7 @@ const castController = require('./controller/castController')
 
 router.use(homeController)
 router.use(movieController)
-router.use(castController)
+router.use('/cast/',castController)
 
 
 
