@@ -29,10 +29,17 @@ const castScheme = new mongoose.Schema({
         type: String,
         required: true,
         validate: {
-            validator: function (value) { return /^https?:\/\//.test(value) },
+            validator: function (value) {
+                return /^https?:\/\//.test(value)
+            },
             message: (props) => `${props.value} is invalid ulr for the castImage! `
         },
     },
+    movies:[{
+        type:mongoose.Types.ObjectId,
+        ref:'Movie'
+    }]
+
 })
 
 const Cast = mongoose.model('Cast', castScheme)
