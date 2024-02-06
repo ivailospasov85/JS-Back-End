@@ -1,72 +1,49 @@
-const express = require('express')
-const cookieParser=require('cookie-parser')
-const bcrypt = require('bcrypt')
+const express = require('express');
+const session = require('express-session');
 
-app = express()
-port = 5000
+const app = express();
 
-app.use(express.urlencoded({ extended: false }))
+app.use(express.urlencoded({ extended: false }));
 app.use(session({
-    secret: 'Iv4o',
+    secret: 'Victoria\'s Secret',
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false }
-}))
+}));
 
 app.get('/', (req, res) => {
+    console.log(req.session);
 
     if (req.session.userInfo) {
         res.send(`Hello ${req.session.userInfo.username}`)
+    } else {
+        res.send('Please Login');
     }
-    else {
-        res.send('Please Login')
-    }
+});
 
-})
-
+// TODO: set cookie
 app.get('/login', (req, res) => {
     res.send(`
     <form action="/login" method="post">
         <label>Username</label>
         <input type="text" name="username" />
         <label>Password</label>
-        <input type="password" name="password">
+        <input type="password" name="password" />
         <input type="submit" value="login">
-    </form>`)
-})
+    </form>
+    `);
+});
 
-app.post('/login', async (req, res) => {
-    
-    
+app.post('/login', (req, res) => {
+    req.session.userInfo = req.body;
+    req.session.priveInfo = 'SeMiTaq';
 
-    res.cookie('user', req.body.username)
-
-    res.end()
-})
-
-app.get('/register', (req, res) => {
-    res.send(`
-    <form action="/register" method="post">
-        <label>Username</label>
-        <input type="text" name="username" />
-        <label>Password</label>
-        <input type="password" name="password">
-        <input type="submit" value="login">
-    </form>`)
-})
-
-app.post('/register',async(req,res)=>{
-    // const salt = await bcrypt.genSalt(10)
-    const hash = await bcrypt.hash(req.body.password, 12)
-     
-})
-
+    res.end();
+});
 
 app.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.end();
+});
 
-
-    // res.cookie('user', req.body.username)
-     res.end()
-})
-
-app.listen(port, () => console.log(`Server is running ot ${port}`))
+app.listen(5000, () => console.log('Server is listening on http://localhost:5000...'));
