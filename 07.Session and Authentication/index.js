@@ -1,21 +1,20 @@
 const express = require('express')
-
+const cookieParser = require('cookie-parser')
 
 app = express()
 port = 5000
 
 app.use(express.urlencoded({ extended: false }))
+app.use(cookieParser())
 
 app.get('/', (req, res) => {
-    const loginInfo = req.header('Cookie')
-   
+    const user = req.cookies['user']
 
-    if (loginInfo) {
-        res.send(`Hello: ${loginInfo.split('=').at(1)}`)
+    if (user) {
+        res.send(`Hello ${user}`)
     } else {
         res.send('Please Login')
     }
-
 })
 
 app.get('/login', (req, res) => {
@@ -30,12 +29,13 @@ app.get('/login', (req, res) => {
 })
 
 app.post('/login', (req, res) => {
-    console.log(req.body);
-
-    res.header('Set-cookie', `loginInfo=${req.body.username}`)
-
+    res.cookie('user', req.body.username)
     res.end()
 })
 
+app.get('/logout',(req,res)=>{
+    res.clearCookie('user')
+    res.end()
+})
 
 app.listen(port, () => console.log(`Server is running ot ${port}`))
