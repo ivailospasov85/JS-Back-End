@@ -4,12 +4,13 @@ const homeController = require('./controller/homeController')
 const movieController = require('./controller/movieController')
 const error404Controller = require('./controller/error404Controller')
 const castController = require('./controller/castController')
-
+const authController=require('./controller/authController')
 
 
 router.use(homeController)
 router.use(movieController)
 router.use('/cast/',castController)
+router.use(authController)
 
 
 
