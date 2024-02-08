@@ -20,6 +20,15 @@ userScheme.pre('save', async function () {
     this.password = hash
 })
 
+userScheme.virtual('rePassword')
+    .set(function (value) {
+        if(value !== this.password){
+             throw new MongooseError('Password mismatch')
+         }
+       
+    })
+
+    
 const User = mongoose.model('User', userScheme)
 
 
