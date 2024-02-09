@@ -5,7 +5,8 @@ const userScheme = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        lowerCase: true
+        lowerCase: true,
+        unique:true,
     },
     password: {
         type: String,
@@ -28,7 +29,7 @@ userScheme.virtual('rePassword')
        
     })
 
-    
+
 const User = mongoose.model('User', userScheme)
 
 
