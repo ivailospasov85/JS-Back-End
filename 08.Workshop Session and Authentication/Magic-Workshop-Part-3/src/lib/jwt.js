@@ -1,7 +1,8 @@
+const util = require('util')
 const jwt = require('jsonwebtoken')
 
 
-function sign(payload, secretOrPrivateKey, options={}) {
+function sign(payload, secretOrPrivateKey, options = {}) {
     const promise = new Promise((resolve, reject) => {
         jwt.sign(payload, secretOrPrivateKey, options, (err, token) => {
             if (err) {
@@ -14,6 +15,9 @@ function sign(payload, secretOrPrivateKey, options={}) {
     return promise
 }
 
+const verify = util.promisify(jwt.verify)
+
 module.exports = {
     sign,
+    verify,
 }

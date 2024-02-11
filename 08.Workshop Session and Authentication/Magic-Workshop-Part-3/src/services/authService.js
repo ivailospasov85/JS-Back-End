@@ -2,8 +2,9 @@ const { error } = require('server/router')
 const User = require('../models/User')
 const bcrypt = require('bcrypt')
 const jwt = require('../lib/jwt')
+const {SECRET}= require("../config/config")
 
-const SECRET = 'dadapisidhaouhfljnapisvshvbsl;nf[odfdfvbjaouoqdw;nixcvnk;svdsn'
+
 
 // TODO :
 exports.register = (userData) => User.create(userData)
