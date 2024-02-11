@@ -1,4 +1,4 @@
-const Cast = require('../models/Cast')
+const Cast = require('../models/cast')
 const Movie = require('../models/Movie')
 
 
