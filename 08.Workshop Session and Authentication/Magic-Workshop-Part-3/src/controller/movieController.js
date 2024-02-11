@@ -10,9 +10,9 @@ router.get('/create', isAuth, (req, res) => {
 
 router.post('/create', isAuth, async (req, res) => {
     const newMovie = req.body
-    
+
     newMovie.owner = req.user._id
-    
+
     try {
         await movieService.create(newMovie)
 
@@ -28,12 +28,13 @@ router.get('/movies/:movieId', async (req, res) => {
 
     movieId = req.params.movieId
     const movie = await movieService.getOne(movieId).lean()
+    const isOwner = movie.owner == req.user._id
     // const casts = await castService.getByIds(movie.casts).lean()
     // const stars = movie.rating
 
     movieRating = new Array(Number(movie.rating)).fill(true)
 
-    res.render('movie/details', { movie, movieRating })
+    res.render('movie/details', { movie, movieRating ,isOwner})
 })
 
 router.get('/movies/:movieId/attach', isAuth, async (req, res) => {
