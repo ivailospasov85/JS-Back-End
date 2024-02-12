@@ -14,6 +14,7 @@ const userScheme = new mongoose.Schema({
         type: String,
         match:[/^[a-zA-Z0-9]+$/,'Password should be alphanumeric'],
         required: true,
+        minLength:[6,"Password too short"],
 
     }
 })

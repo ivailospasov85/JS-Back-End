@@ -1,6 +1,8 @@
 const router = require('express').Router()
 
+const { default: mongoose } = require('mongoose')
 const authService = require('../services/authService')
+const { getErrorMassage } = require('../utils/errorUtils')
 
 router.get('/register', (req, res) => {
     res.render('auth/register')
@@ -8,19 +10,23 @@ router.get('/register', (req, res) => {
 })
 
 router.post('/register', async (req, res) => {
-    const userData = req.body
 
+    const userData = req.body
 
     try {
         await authService.register(userData)
+
         res.redirect('/login')
+
     } catch (err) {
-       res.render('auth/register',{error:err.message});
+       const message= getErrorMassage(err)
+
+        res.render('auth/register', { ...userData, error: message });
     }
 
 
 
-    
+
 })
 
 
