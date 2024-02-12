@@ -6,10 +6,13 @@ const userScheme = new mongoose.Schema({
         type: String,
         required: true,
         lowerCase: true,
-        unique:true,
+        unique: true,
+        match: [/@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/, 'Invalid email address'],
+        minLength:[10,'Email should be at least 10 characters'],
     },
     password: {
         type: String,
+        match:[/^[a-zA-Z0-9]+$/,'Password should be alphanumeric'],
         required: true,
 
     }
@@ -23,10 +26,10 @@ userScheme.pre('save', async function () {
 
 userScheme.virtual('rePassword')
     .set(function (value) {
-        if(value !== this.password){
-             throw new MongooseError('Password mismatch')
-         }
-       
+        if (value !== this.password) {
+            throw new MongooseError('Password mismatch')
+        }
+
     })
 
 
