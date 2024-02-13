@@ -1,15 +1,16 @@
 const router = require('express').Router()
 
-const { default: mongoose } = require('mongoose')
+
 const authService = require('../services/authService')
-const { getErrorMassage } = require('../utils/errorUtils')
+const { getErrorMassage} = require('../utils/errorUtils')
+
 
 router.get('/register', (req, res) => {
     res.render('auth/register')
 
 })
 
-router.post('/register', async (req, res) => {
+router.post('/register' , async (req, res) => {
 
     const userData = req.body
 
@@ -19,17 +20,12 @@ router.post('/register', async (req, res) => {
         res.redirect('/login')
 
     } catch (err) {
-       const message= getErrorMassage(err)
+        const message = getErrorMassage(err)
 
         res.render('auth/register', { ...userData, error: message });
     }
 
-
-
-
 })
-
-
 
 router.get('/login', (req, res) => {
     res.render('auth/login')
@@ -37,14 +33,24 @@ router.get('/login', (req, res) => {
 })
 
 router.post('/login', async (req, res) => {
+    
     const { email, password } = req.body
 
-    const token = await authService.login(email, password)
+    try {
 
-    res.cookie('auth', token)
+        const token = await authService.login(email, password)
 
+        res.cookie('auth', token)
+        
+        res.redirect('/')
 
-    res.redirect('/')
+    } catch (error) {
+        
+        const message = getErrorMassage(error)
+
+        res.status(400).render('auth/login', { error: message })
+    }
+
 
 })
 
