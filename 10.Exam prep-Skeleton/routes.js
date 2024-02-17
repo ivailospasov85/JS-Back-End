@@ -2,12 +2,14 @@ const router = require('express').Router()
 
 const homeController = require('./controllers/homeControllers')
 const authController = require('./controllers/authController')
+const courseController=require('./controllers/courseController')
 
 router.use(homeController)
 router.use('/auth', authController)
+router.use('/courses',courseController)
 
-router.get('/', (req, res) => {
-    res.send('Hello World')
+router.all('*', (req, res) => {
+    res.render('404')
 
 })   
 
