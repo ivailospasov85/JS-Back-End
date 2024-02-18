@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/:courseId/details', async (req, res) => {
-    const course = await courseService.getOne(req.params.courseId).lean()
+    const course = await courseService.getOneWhitPopulate(req.params.courseId).lean()
 
     const signUpUsers = course.signUpList.map(user => user.username).join(', ')
 
@@ -50,11 +50,24 @@ router.post('/create', isAuth, async (req, res) => {
 })
 
 router.get('/:courseId/edit', isCourseOwner, async (req, res) => {
-    
-    const course = await courseService.getOne(req.params.courseId)
 
-    res.render('courses/edit', {...course })
+
+    const course = await courseService.getOne(req.params.courseId).lean()
+
+    res.render('courses/edit', { ...course })
 })
+
+router.post('/:courseId/edit', isCourseOwner, async (req, res) => {
+    const courseDate = req.body
+    try {
+        await courseService.edit(req.params.courseId, courseDate)
+
+        res.redirect(`/courses/${req.params.courseId}/details`)
+    } catch (err) {
+        res.render('/courses/edit', { ...courseDate, error: getErrorMessage(err) })
+    }
+})
+
 
 router.get('/:courseId/delete', isCourseOwner, async (req, res) => {
     await courseService.delete(req.params.courseId)
@@ -68,6 +81,7 @@ async function isCourseOwner(req, res, next) {
     if (course.owner != req.user?._id) {
         return res.redirect(`/courses/${req.params.courseId}/details`)
     }
+
 
     next()
 

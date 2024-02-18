@@ -4,11 +4,15 @@ const User = require('../models/User')
 
 exports.getAll = () => Course.find()
 
-exports.getOne = (courseId) => Course.findById(courseId).populate('owner').populate('signUpList')
+exports.getOne = (courseId) => Course.findById(courseId)
+
+exports.getLast3Courses=()=>Course.find().sort({createdAt:-1}).limit(3)
+
+exports.getOneWhitPopulate = (courseId) => this.getOne(courseId).populate('owner').populate('signUpList')
 
 exports.signUp = async (courseId, userId) => {
-    await Course.findByIdAndUpdate(courseId, { $push: { signUpList: userId } })
-    await User.findByIdAndUpdate(userId, { $push: { signedUpCourses: courseId } })
+    await Course.findByIdAndUpdate(courseId, { $push: { signUpList: userId } }, { runValidators: true })
+    await User.findByIdAndUpdate(userId, { $push: { signedUpCourses: courseId } }, { runValidators: true })
     // const course = await Course.findById(courseId);
     // const user = await User.findById(userId);
 
@@ -36,5 +40,8 @@ exports.create = async (userId, courseDate) => {
     return createdCourse
 }
 
+exports.edit = (courseId, courseDate) => Course.findByIdAndUpdate(courseId, courseDate, { runValidators: true })
+
 
 exports.delete = (courseId) => Course.findByIdAndDelete(courseId)
+
