@@ -8,7 +8,7 @@ const routes = require('./routes')
 const { authMiddleware } = require('./middleWare/authMiddleWare')
 
 const app = express()
-const port = 3000
+const port = 5000
 
 app.use('/static', express.static('static', { 'extensions': ['css'], 'index': false, 'setHeaders': (res, path) => { res.type('text/css'); } }));
 
